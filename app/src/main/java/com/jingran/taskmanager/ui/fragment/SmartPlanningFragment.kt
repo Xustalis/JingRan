@@ -158,9 +158,10 @@ class SmartPlanningFragment : Fragment() {
             showImportScheduleDialog()
         }
 
-        binding.fabRefresh.setOnClickListener {
-            refreshPlan()
-        }
+// Refresh functionality can be moved to a menu item or pull-to-refresh later
+        // binding.fabRefresh.setOnClickListener {
+        //     refreshPlan()
+        // }
     }
     
     private fun setupObservers() {
