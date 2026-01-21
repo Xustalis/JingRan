@@ -58,4 +58,5 @@
     *   `utils`: 工具类 (LogManager 等)。
 
 ## 📝 许可证
-[此处添加许可证信息]
+本项目采用 [GNU General Public License v3.0 (GPLv3)](LICENSE) 许可证授权。
+详细信息请参阅 [LICENSE](LICENSE) 文件。
