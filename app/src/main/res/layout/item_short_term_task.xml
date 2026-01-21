@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardBackgroundColor="@color/ios_secondary_system_grouped_background"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/card_padding"
+        android:gravity="center_vertical">
+
+        <!-- 完成状态复选框 -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_large" />
+
+        <!-- 任务信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 任务标题 -->
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="任务标题"
+                style="@style/IOSBody"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/spacing_small" />
+
+            <!-- 截止时间 -->
+            <TextView
+                android:id="@+id/textDeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="截止: 12-25 18:00"
+                style="@style/IOSFootnote"
+                android:textColor="@color/ios_secondary_label"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:drawablePadding="@dimen/spacing_small"
+                app:drawableStartCompat="@drawable/ic_schedule" />
+
+            <!-- 时长和优先级 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="时长: 60分钟"
+                    style="@style/IOSFootnote"
+                    android:textColor="@color/ios_secondary_label" />
+
+                <TextView
+                    android:id="@+id/textPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="优先级: 高"
+                    style="@style/IOSFootnote"
+                    android:textStyle="bold"
+                    android:textColor="@color/ios_blue" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 删除按钮 -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="删除任务"
+            android:padding="@dimen/spacing_medium" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

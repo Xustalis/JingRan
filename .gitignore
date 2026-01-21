@@ -1,0 +1,44 @@
+# Gradle files
+.gradle/
+build/
+
+# Kotlin / IntelliJ
+.kotlin/
+.idea/
+*.iml
+*.iws
+out/
+
+# Android Studio
+local.properties
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aar
+*.jks
+*.keystore
+
+# VS Code
+.vscode/
+
+# Node.js (if applicable)
+node_modules/
+package-lock.json
+
+# JingRan Project Specific - Logs and Temporary Files
+*.log
+build_log.txt
+build_log_2.txt
+build_output.txt
+last_build.log
+stacktrace.txt
+screenshot.png
+ui.xml
+ui_full.xml
+test_build.bat
+
+# OS files
+.DS_Store
+Thumbs.db

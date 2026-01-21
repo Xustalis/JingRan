@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    
+    <!-- 背景圆形 -->
+    <path
+        android:fillColor="@color/button_blue"
+        android:pathData="M36,36m-32,0a32,32 0,1 1,64 0a32,32 0,1 1,-64 0" />
+    
+    <!-- 任务列表图标 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,20h24v4h-24z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,28h24v4h-24z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,36h24v4h-24z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,44h16v4h-16z" />
+    
+    <!-- 勾选标记 -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M18,20m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M18,28m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M18,36m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M18,44m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+        
+</vector>

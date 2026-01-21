@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme for API 27+ -->
+    <style name="Theme.JingRan" parent="Theme.Material3.DayNight">
+        <!-- Navigation bar light mode for API 27+ -->
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

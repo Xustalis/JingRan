@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ios_system_background"
+    tools:context=".ui.fragment.SmartPlanningFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- 日期选择区域 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="@color/ios_background_secondary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/button_previous_day"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ios_button_background"
+                        android:src="@drawable/ic_chevron_left"
+                        android:contentDescription="前一天"
+                        app:tint="@color/ios_blue" />
+
+                    <TextView
+                        android:id="@+id/text_view_current_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2024年01月15日 星期一"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ios_label_primary"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-medium"
+                        android:lineSpacingExtra="2dp" />
+
+                    <ImageButton
+                        android:id="@+id/button_next_day"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ios_button_background"
+                        android:src="@drawable/ic_chevron_right"
+                        android:contentDescription="后一天"
+                        app:tint="@color/ios_blue" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 统计信息区域 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="@color/ios_background_secondary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="今日效率统计"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ios_label_primary"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/text_view_total_tasks"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="总任务数: 0"
+                            android:textSize="15sp"
+                            android:textColor="@color/ios_label_secondary"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="1dp" />
+
+                        <TextView
+                            android:id="@+id/text_view_completed_tasks"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="已完成: 0"
+                            android:textSize="15sp"
+                            android:textColor="@color/ios_label_secondary"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="1dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/text_view_completion_rate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="完成率: 0%"
+                            android:textSize="15sp"
+                            android:textColor="@color/ios_label_secondary"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="1dp" />
+
+                        <TextView
+                            android:id="@+id/text_view_total_duration"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="总时长: 0分钟"
+                            android:textSize="15sp"
+                            android:textColor="@color/ios_label_secondary"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="1dp" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_completion"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:progress="0"
+                        android:max="100"
+                        android:progressTint="@color/ios_green"
+                        android:progressBackgroundTint="@color/ios_separator" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 操作按钮区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <!-- 第一行按钮 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <Button
+                        android:id="@+id/button_generate_plan"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="生成智能计划"
+                        android:textColor="@color/ios_white"
+                        android:background="@drawable/ios_button_background"
+                        android:backgroundTint="@color/ios_blue"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/button_add_emergency_task"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="添加紧急任务"
+                        android:textColor="@color/ios_white"
+                        android:background="@drawable/ios_button_background"
+                        android:backgroundTint="@color/button_blue"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!-- 第二行按钮 -->
+                <Button
+                    android:id="@+id/button_import_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="导入课程表"
+                    android:textColor="@color/ios_white"
+                    android:background="@drawable/ios_button_background"
+                    android:backgroundTint="@color/button_blue"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <!-- 固定日程区域 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="@color/ios_background_secondary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="固定日程"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ios_label_primary"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_fixed_schedules"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_fixed_schedule" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 计划任务区域 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="@color/ios_background_secondary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="今日计划"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ios_label_primary"
+                        android:layout_marginBottom="12dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_plan_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_plan_item" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 加载进度条 -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateTint="@color/ios_blue" />
+
+    <!-- 刷新按钮 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_refresh"
+        android:contentDescription="刷新"
+        app:backgroundTint="@color/ios_blue"
+        app:tint="@color/ios_white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

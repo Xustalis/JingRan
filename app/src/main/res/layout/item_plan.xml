@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="@color/ios_secondary_system_grouped_background"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- 时间轴指示器 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="16dp">
+
+            <!-- 时间轴圆点 -->
+            <View
+                android:id="@+id/timelineIndicator"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/timeline_indicator"
+                android:layout_marginTop="4dp" />
+
+            <!-- 时间轴线条 -->
+            <View
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/ios_separator"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp" />
+
+        </LinearLayout>
+
+        <!-- 完成状态复选框 -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp" />
+
+        <!-- 计划信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 时间范围 -->
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09:00 - 10:30"
+                style="@style/IOSCallout"
+                android:textStyle="bold"
+                android:textColor="@color/ios_blue"
+                android:layout_marginBottom="4dp" />
+
+            <!-- 任务标题 -->
+            <TextView
+                android:id="@+id/textTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="任务标题"
+                style="@style/IOSBody" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

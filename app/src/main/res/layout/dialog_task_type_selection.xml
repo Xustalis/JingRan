@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dialog_padding"
+    android:background="@color/ios_system_background">
+
+    <!-- 标题 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/task_type_selection"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/ios_label"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/dialog_padding"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- 短期任务选项 -->
+    <LinearLayout
+        android:id="@+id/layoutShortTermTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/list_item_padding"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="@dimen/spacing_large">
+
+        <ImageView
+            android:layout_width="@dimen/icon_large"
+            android:layout_height="@dimen/icon_large"
+            android:src="@drawable/ic_list"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            app:tint="@color/button_blue" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/short_term_task"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/ios_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="适合一次性完成的任务"
+                android:textSize="14sp"
+                android:textColor="@color/ios_secondary_label"
+                android:layout_marginTop="@dimen/spacing_small" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 长期任务选项 -->
+    <LinearLayout
+        android:id="@+id/layoutLongTermTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/list_item_padding"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="@dimen/icon_large"
+            android:layout_height="@dimen/icon_large"
+            android:src="@drawable/ic_calendar"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            app:tint="@color/button_blue" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/long_term_task"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/ios_label" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="需要分阶段完成的大型任务"
+                android:textSize="14sp"
+                android:textColor="@color/ios_secondary_label"
+                android:layout_marginTop="@dimen/spacing_small" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

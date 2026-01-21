@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_course_schedule"
+        android:title="课程表管理"
+        android:icon="@drawable/ic_schedule"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_data_sync"
+        android:title="数据同步"
+        android:icon="@drawable/ic_sync"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_add_task"
+        android:title="@string/add_task"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always" />
+
+
+
+</menu>

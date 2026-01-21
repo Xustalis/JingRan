@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 平板设备 (屏幕宽度 >= 600dp) -->
+<resources>
+    <!-- 标准间距 - 平板适配 -->
+    <dimen name="spacing_tiny">3dp</dimen>
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">18dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+    
+    <!-- 卡片和容器 - 平板适配 -->
+    <dimen name="card_margin">12dp</dimen>
+    <dimen name="card_padding">24dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    
+    <!-- 图标尺寸 - 平板适配 -->
+    <dimen name="icon_small">20dp</dimen>
+    <dimen name="icon_medium">28dp</dimen>
+    <dimen name="icon_large">40dp</dimen>
+    <dimen name="icon_xlarge">56dp</dimen>
+    
+    <!-- 按钮和触摸目标 - 平板适配 -->
+    <dimen name="touch_target_size">48dp</dimen>
+    <dimen name="button_height">52dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+    <dimen name="button_padding_vertical">16dp</dimen>
+    
+    <!-- 导航栏 - 平板适配 -->
+    <dimen name="navigation_bar_height">48dp</dimen>
+    <dimen name="navigation_padding">24dp</dimen>
+    
+    <!-- 列表项 - 平板适配 -->
+    <dimen name="list_item_padding">24dp</dimen>
+    <dimen name="list_item_margin">12dp</dimen>
+    <dimen name="list_divider_height">1dp</dimen>
+    
+    <!-- 文本间距 - 平板适配 -->
+    <dimen name="text_margin_small">6dp</dimen>
+    <dimen name="text_margin_medium">12dp</dimen>
+    <dimen name="text_margin_large">18dp</dimen>
+    
+    <!-- 对话框 - 平板适配 -->
+    <dimen name="dialog_padding">32dp</dimen>
+    <dimen name="dialog_margin">24dp</dimen>
+    
+    <!-- 浮动按钮 - 平板适配 -->
+    <dimen name="fab_margin">24dp</dimen>
+    
+    <!-- 分隔线 - 平板适配 -->
+    <dimen name="separator_height">1dp</dimen>
+    <dimen name="separator_margin">24dp</dimen>
+</resources>

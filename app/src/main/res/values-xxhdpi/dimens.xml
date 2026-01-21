@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 超高密度屏幕 (xxhdpi) -->
+<resources>
+    <!-- 标准间距 - 高密度屏幕适配 -->
+    <dimen name="spacing_tiny">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">12dp</dimen>
+    <dimen name="spacing_xlarge">16dp</dimen>
+    <dimen name="spacing_xxlarge">24dp</dimen>
+    
+    <!-- 卡片和容器 - 高密度屏幕适配 -->
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    
+    <!-- 图标尺寸 - 高密度屏幕适配 -->
+    <dimen name="icon_small">16dp</dimen>
+    <dimen name="icon_medium">24dp</dimen>
+    <dimen name="icon_large">32dp</dimen>
+    <dimen name="icon_xlarge">48dp</dimen>
+    
+    <!-- 按钮和触摸目标 - 高密度屏幕适配 -->
+    <dimen name="touch_target_size">44dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_padding_horizontal">16dp</dimen>
+    <dimen name="button_padding_vertical">12dp</dimen>
+    
+    <!-- 导航栏 - 高密度屏幕适配 -->
+    <dimen name="navigation_bar_height">44dp</dimen>
+    <dimen name="navigation_padding">16dp</dimen>
+    
+    <!-- 列表项 - 高密度屏幕适配 -->
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="list_item_margin">8dp</dimen>
+    <dimen name="list_divider_height">0.5dp</dimen>
+    
+    <!-- 文本间距 - 高密度屏幕适配 -->
+    <dimen name="text_margin_small">4dp</dimen>
+    <dimen name="text_margin_medium">8dp</dimen>
+    <dimen name="text_margin_large">12dp</dimen>
+    
+    <!-- 对话框 - 高密度屏幕适配 -->
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_margin">16dp</dimen>
+    
+    <!-- 浮动按钮 - 高密度屏幕适配 -->
+    <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- 分隔线 - 高密度屏幕适配 -->
+    <dimen name="separator_height">1dp</dimen>
+    <dimen name="separator_margin">20dp</dimen>
+</resources>

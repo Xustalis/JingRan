@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="@color/ios_secondary_system_grouped_background"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- 完成状态复选框 -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp" />
+
+        <!-- 任务信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 任务标题 -->
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="长期任务标题"
+                style="@style/IOSBody"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <!-- 目标描述 -->
+            <TextView
+                android:id="@+id/textGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="目标: 完成项目开发"
+                style="@style/IOSCallout"
+                android:textColor="@color/ios_secondary_label"
+                android:layout_marginBottom="4dp" />
+
+            <!-- 创建时间 -->
+            <TextView
+                android:id="@+id/textCreateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="创建于: 2024-01-01"
+                style="@style/IOSFootnote"
+                android:textColor="@color/ios_secondary_label"
+                android:drawablePadding="4dp"
+                app:drawableStartCompat="@drawable/ic_calendar" />
+
+        </LinearLayout>
+
+        <!-- 删除按钮 -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="删除任务"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
