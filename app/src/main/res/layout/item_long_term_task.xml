@@ -1,80 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- iOS Reminders Style Long Term Task / Goal Item -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardView"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="0dp"
-    app:cardCornerRadius="12dp"
-    app:cardBackgroundColor="@color/ios_secondary_system_grouped_background"
-    app:strokeWidth="0dp">
+    android:background="@color/ios_secondary_system_grouped_background"
+    android:paddingStart="@dimen/list_item_padding"
+    android:paddingEnd="@dimen/list_item_padding"
+    android:paddingTop="@dimen/spacing_large"
+    android:paddingBottom="@dimen/spacing_large">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- iOS 风格空心圆复选框 -->
+    <ImageView
+        android:id="@+id/checkBoxComplete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_circle_outline"
+        android:contentDescription="完成状态"
+        app:tint="@color/ios_green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- 任务标题 -->
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="长期目标"
+        android:textColor="@color/ios_label"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/textGoal"
+        app:layout_constraintEnd_toStartOf="@+id/chevronIcon"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="学习 Android 开发" />
 
-        <!-- 完成状态复选框 -->
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkBoxComplete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp" />
+    <!-- 目标描述 -->
+    <TextView
+        android:id="@+id/textGoal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/ios_secondary_label"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/textCreateTime"
+        app:layout_constraintEnd_toStartOf="@+id/chevronIcon"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle"
+        tools:text="掌握 Kotlin 和 Jetpack 组件" />
 
-        <!-- 任务信息 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <!-- 创建时间 -->
+    <TextView
+        android:id="@+id/textCreateTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/ios_tertiary_label"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chevronIcon"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
+        app:layout_constraintTop_toBottomOf="@+id/textGoal"
+        tools:text="创建于 2024年1月1日" />
 
-            <!-- 任务标题 -->
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="长期任务标题"
-                style="@style/IOSBody"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp" />
+    <!-- 右侧 Chevron 箭头 -->
+    <ImageView
+        android:id="@+id/chevronIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_chevron_right"
+        android:contentDescription="查看详情"
+        app:tint="@color/ios_tertiary_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- 目标描述 -->
-            <TextView
-                android:id="@+id/textGoal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="目标: 完成项目开发"
-                style="@style/IOSCallout"
-                android:textColor="@color/ios_secondary_label"
-                android:layout_marginBottom="4dp" />
+    <!-- 底部分隔线 -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/list_divider_height"
+        android:background="@color/ios_separator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textTitle" />
 
-            <!-- 创建时间 -->
-            <TextView
-                android:id="@+id/textCreateTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="创建于: 2024-01-01"
-                style="@style/IOSFootnote"
-                android:textColor="@color/ios_secondary_label"
-                android:drawablePadding="4dp"
-                app:drawableStartCompat="@drawable/ic_calendar" />
-
-        </LinearLayout>
-
-        <!-- 删除按钮 -->
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="删除任务"
-            android:padding="8dp" />
-
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
