@@ -12,6 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.tabs.TabLayout
 import com.jingran.taskmanager.R
 import com.jingran.taskmanager.ui.activity.TaskEditActivity
@@ -21,6 +23,7 @@ import com.jingran.utils.ErrorHandler
 import com.jingran.utils.LogManager
 import com.jingran.taskmanager.viewmodel.ShortTermTaskViewModel
 import com.jingran.taskmanager.viewmodel.LongTermTaskViewModel
+import com.jingran.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment() {
@@ -34,6 +37,7 @@ class TaskListFragment : Fragment() {
     private val shortTermTaskViewModel: ShortTermTaskViewModel by viewModels()
     private val longTermTaskViewModel: LongTermTaskViewModel by viewModels()
     
+    private lateinit var toggleGroup: MaterialButtonToggleGroup
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var shortTermAdapter: ShortTermTaskAdapter
@@ -71,12 +75,14 @@ class TaskListFragment : Fragment() {
             
             // 恢复标签页状态
             restoreTabState()
+            setupToggleGroup()
             
             LogManager.exitMethod(TAG, "onViewCreated", "成功")
         }
     }
     
     private fun initViews(view: View) {
+        toggleGroup = view.findViewById(R.id.toggleGroup)
         tabLayout = view.findViewById(R.id.tabLayout)
         recyclerView = view.findViewById(R.id.recyclerViewTasks)
     }
@@ -155,28 +161,50 @@ class TaskListFragment : Fragment() {
         )
         
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        setupSwipeToDelete()
+    }
+
+    private fun setupSwipeToDelete() {
+        val swipeHandler = object : SwipeToDeleteCallback() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                when (currentTab) {
+                    0 -> {
+                        val task = shortTermAdapter.currentList[position]
+                        shortTermTaskViewModel.deleteShortTermTask(task)
+                        Toast.makeText(context, "短期任务已删除", Toast.LENGTH_SHORT).show()
+                    }
+                    1 -> {
+                        val task = longTermAdapter.currentList[position]
+                        longTermTaskViewModel.deleteLongTermTask(task)
+                        Toast.makeText(context, "长期任务已删除", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
     
-    private fun setupTabLayout() {
-        tabLayout.addTab(tabLayout.newTab().setText("短期任务"))
-        tabLayout.addTab(tabLayout.newTab().setText("长期任务"))
-        
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                currentTab = tab?.position ?: 0
-                savedScrollPosition = 0 // 切换标签时重置滚动位置
+    private fun setupToggleGroup() {
+        toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                currentTab = when (checkedId) {
+                    R.id.btnShortTerm -> 0
+                    R.id.btnLongTerm -> 1
+                    else -> 0
+                }
+                savedScrollPosition = 0
                 when (currentTab) {
                     0 -> loadShortTermTasks()
                     1 -> loadLongTermTasks()
                 }
             }
-            
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // 保存当前滚动位置
-                saveCurrentScrollPosition()
-            }
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+        }
+    }
+
+    private fun setupTabLayout() {
+        // Obsolete, functionality moved to setupToggleGroup()
     }
     
     private fun observeViewModel() {
@@ -253,7 +281,15 @@ class TaskListFragment : Fragment() {
     }
     
     private fun restoreTabState() {
-        // 恢复标签页选中状态
+        // 恢复 ToggleGroup 选中状态
+        val checkedId = when (currentTab) {
+            0 -> R.id.btnShortTerm
+            1 -> R.id.btnLongTerm
+            else -> R.id.btnShortTerm
+        }
+        toggleGroup.check(checkedId)
+
+        // 保持兼容性恢复标签页选中状态（如果 TabLayout 还在发挥作用）
         tabLayout.getTabAt(currentTab)?.select()
         
         // 加载对应的任务列表

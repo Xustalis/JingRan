@@ -4,29 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/ios_system_background">
+    android:background="@color/ios_system_grouped_background">
 
-    <!-- Tab布局 -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <!-- iOS 风格分段控制器 (Segmented Control) 替代 TabLayout -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/ios_system_background"
-        app:tabTextColor="@color/ios_secondary_label"
-        app:tabSelectedTextColor="@color/ios_blue"
-        app:tabIndicatorColor="@color/ios_blue"
-        android:elevation="2dp"
-        app:tabMode="fixed" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            app:checkedButton="@+id/btnShortTerm"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnShortTerm"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="短期任务"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/ios_separator" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLongTerm"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="长期任务"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/ios_separator" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <!-- 隐藏原有的 TabLayout 以保持兼容性 (如果代码中引用了它) -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <!-- 任务列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTasks"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="80dp"
-        android:background="@color/ios_system_background" />
+        android:paddingBottom="80dp" />
 
 </LinearLayout>
