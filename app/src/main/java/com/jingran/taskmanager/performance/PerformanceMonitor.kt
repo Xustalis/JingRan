@@ -104,10 +104,10 @@ open class PerformanceMonitor(private val application: Application) {
         
         activityManager?.let { am ->
             val memoryInfo = android.app.ActivityManager.MemoryInfo()
-            memoryInfo.availMem = 1
+            am.getMemoryInfo(memoryInfo)
             
             val memoryClass = am.memoryClass
-            val totalMemory = memoryClass.totalMem
+            val totalMemory = memoryInfo.totalMem
             val availableMemory = memoryInfo.availMem
             val usedMemory = totalMemory - availableMemory
             
@@ -206,7 +206,7 @@ open class PerformanceMonitor(private val application: Application) {
         val olderAvg = older.map { it.value }.average()
         
         return if (olderAvg > 0) {
-            (recentAvg - olderAvg) / olderAvg
+            ((recentAvg - olderAvg) / olderAvg).toFloat()
         } else {
             0f
         }
@@ -327,15 +327,15 @@ open class PerformanceMonitor(private val application: Application) {
             databaseMetricsCount = databaseMetrics.size,
             uiMetricsCount = uiMetrics.size,
             networkMetricsCount = networkMetrics.size,
-            avgMemoryUsageRatio = avgMemoryUsage,
-            avgDatabaseOperationTime = avgDatabaseOperationTime,
-            avgUIOperationTime = avgUIOperationTime,
-            avgNetworkOperationTime = avgNetworkOperationTime,
+            avgMemoryUsageRatio = avgMemoryUsage.toFloat(),
+            avgDatabaseOperationTime = avgDatabaseOperationTime.toFloat(),
+            avgUIOperationTime = avgUIOperationTime.toFloat(),
+            avgNetworkOperationTime = avgNetworkOperationTime.toFloat(),
             recommendations = generateRecommendations(
-                avgMemoryUsage,
-                avgDatabaseOperationTime,
-                avgUIOperationTime,
-                avgNetworkOperationTime
+                avgMemoryUsage.toFloat(),
+                avgDatabaseOperationTime.toFloat(),
+                avgUIOperationTime.toFloat(),
+                avgNetworkOperationTime.toFloat()
             )
         )
     }

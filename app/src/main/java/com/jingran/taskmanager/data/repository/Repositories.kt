@@ -53,7 +53,7 @@ data class Repositories(
     }
     
     val courseRepository: CourseRepository by lazy {
-        CourseRepository(courseScheduleDao, importRecordDao)
+        CourseRepository(courseScheduleDao)
     }
     
     val statsRepository: StatsRepository by lazy {

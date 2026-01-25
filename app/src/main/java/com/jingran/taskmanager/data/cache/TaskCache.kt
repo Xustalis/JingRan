@@ -103,7 +103,7 @@ open class TaskCache(private val context: Context, private val repository: TaskR
         }
         
         LogManager.d(TAG, "从数据库获取所有短期任务")
-        val tasks = repository.getAllShortTermTasksSync()
+        val tasks = repository.getShortTermTaskDao().getAllTasksSync()
         
         tasks.forEach { putShortTermTask(it) }
         
@@ -119,7 +119,7 @@ open class TaskCache(private val context: Context, private val repository: TaskR
         }
         
         LogManager.d(TAG, "从数据库获取所有长期任务")
-        val tasks = repository.getAllLongTermTasksSync()
+        val tasks = repository.getLongTermTaskDao().getAllTasksSync()
         
         tasks.forEach { putLongTermTask(it) }
         

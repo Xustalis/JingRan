@@ -631,6 +631,9 @@ open class TaskRepository constructor(
             )
         }
     }
+    
+    fun getShortTermTaskDao(): ShortTermTaskDao = shortTermTaskDao
+    fun getLongTermTaskDao(): LongTermTaskDao = longTermTaskDao
 }
 
 /**

@@ -120,7 +120,7 @@ open class AdvancedPlanningService(private val repository: TaskRepository) {
         )
     }
     
-    private fun createPlanningContext(
+    private suspend fun createPlanningContext(
         date: Long,
         userPreferences: UserPreferences,
         historicalData: HistoricalData
@@ -374,7 +374,7 @@ open class AdvancedPlanningService(private val repository: TaskRepository) {
         )
     }
     
-    private fun calculateEnergyEfficiency(
+    private suspend fun calculateEnergyEfficiency(
         plannedItems: List<PlanItem>,
         context: PlanningContext
     ): Float {
