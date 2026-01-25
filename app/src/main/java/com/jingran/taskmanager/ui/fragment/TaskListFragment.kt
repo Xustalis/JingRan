@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
 import com.jingran.taskmanager.R
 import com.jingran.taskmanager.ui.activity.TaskEditActivity
@@ -37,7 +38,7 @@ class TaskListFragment : Fragment() {
     private val shortTermTaskViewModel: ShortTermTaskViewModel by viewModels()
     private val longTermTaskViewModel: LongTermTaskViewModel by viewModels()
     
-    private lateinit var toggleGroup: MaterialButtonToggleGroup
+    private lateinit var chipGroup: ChipGroup
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var shortTermAdapter: ShortTermTaskAdapter
@@ -82,7 +83,7 @@ class TaskListFragment : Fragment() {
     }
     
     private fun initViews(view: View) {
-        toggleGroup = view.findViewById(R.id.toggleGroup)
+        chipGroup = view.findViewById(R.id.chipGroup)
         tabLayout = view.findViewById(R.id.tabLayout)
         recyclerView = view.findViewById(R.id.recyclerViewTasks)
     }
@@ -187,11 +188,11 @@ class TaskListFragment : Fragment() {
     }
     
     private fun setupToggleGroup() {
-        toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if (isChecked) {
+        chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId != -1) {
                 currentTab = when (checkedId) {
-                    R.id.btnShortTerm -> 0
-                    R.id.btnLongTerm -> 1
+                    R.id.chipShortTerm -> 0
+                    R.id.chipLongTerm -> 1
                     else -> 0
                 }
                 savedScrollPosition = 0
@@ -281,13 +282,13 @@ class TaskListFragment : Fragment() {
     }
     
     private fun restoreTabState() {
-        // 恢复 ToggleGroup 选中状态
+        // 恢复 ChipGroup 选中状态
         val checkedId = when (currentTab) {
-            0 -> R.id.btnShortTerm
-            1 -> R.id.btnLongTerm
-            else -> R.id.btnShortTerm
+            0 -> R.id.chipShortTerm
+            1 -> R.id.chipLongTerm
+            else -> R.id.chipShortTerm
         }
-        toggleGroup.check(checkedId)
+        chipGroup.check(checkedId)
 
         // 保持兼容性恢复标签页选中状态（如果 TabLayout 还在发挥作用）
         tabLayout.getTabAt(currentTab)?.select()

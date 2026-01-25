@@ -11,14 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
-import javax.inject.Singleton
-/**
- * 任务Repository
- * 负责核心任务管理相关的数据访问操作
- * 已将专门功能分离到对应的Repository中
- */
-@Singleton
+
 open class TaskRepository constructor(
     private val database: TaskDatabase,
     private val shortTermTaskDao: ShortTermTaskDao,

@@ -5,26 +5,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jingran.taskmanager.data.database.TaskDatabase
 import com.jingran.taskmanager.data.entity.DailyStats
 import com.jingran.taskmanager.data.entity.PlanItem
 import com.jingran.taskmanager.data.entity.ShortTermTask
 import com.jingran.taskmanager.data.entity.FixedSchedule
-import com.jingran.taskmanager.data.repository.TaskRepository
+import com.jingran.taskmanager.di.DependencyInjectionModule
 import com.jingran.taskmanager.service.EnhancedPlanningService
 import com.jingran.utils.CoroutineErrorHandler
 import com.jingran.utils.LogManager
 import com.jingran.utils.DateUtils.isSameDay
 import kotlinx.coroutines.launch
 
-/**
- * 计划管理 ViewModel
- * 专注于日程计划的管理
- */
 class PlanningViewModel(application: Application) : AndroidViewModel(application) {
     
-    private val repository: TaskRepository
-    private val planningService: EnhancedPlanningService
+    private val repository = DependencyInjectionModule.getTaskRepository()
+    private val planningService = EnhancedPlanningService(repository)
     
     private val _todayPlanItems = MutableLiveData<List<PlanItem>>()
     val todayPlanItems: LiveData<List<PlanItem>> = _todayPlanItems
@@ -47,27 +42,7 @@ class PlanningViewModel(application: Application) : AndroidViewModel(application
     
     init {
         LogManager.d(TAG, "PlanningViewModel initialization started")
-        
-        val database = TaskDatabase.getDatabase(application)
-        repository = TaskRepository(
-            database,
-            database.shortTermTaskDao(),
-            database.longTermTaskDao(),
-            database.subTaskDao(),
-            database.planItemDao(),
-            database.fixedScheduleDao(),
-            database.dailyStatsDao(),
-            database.courseScheduleDao(),
-            database.importRecordDao(),
-            database.syncRecordDao(),
-            database.backupRecordDao()
-        )
-        
-        planningService = EnhancedPlanningService(repository)
-        
-        // 初始化今日计划
         loadTodayPlan()
-        
         LogManager.d(TAG, "PlanningViewModel initialization completed")
     }
     
@@ -105,11 +80,9 @@ class PlanningViewModel(application: Application) : AndroidViewModel(application
         ) {
             val planningResult = planningService.generateIntelligentPlan(date, tasks)
             
-            // 保存计划项
             if (planningResult.planItems.isNotEmpty()) {
                 repository.insertPlanItems(planningResult.planItems)
                 
-                // 如果是今天的计划，更新LiveData
                 val calendar = java.util.Calendar.getInstance()
                 val todayMillis = calendar.timeInMillis
                 if (isSameDay(date, todayMillis)) {
@@ -125,7 +98,6 @@ class PlanningViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             repository.updatePlanItem(planItem)
             
-            // 如果是今天的计划项，刷新今日计划
             val calendar = java.util.Calendar.getInstance()
             val todayMillis = calendar.timeInMillis
             if (isSameDay(planItem.planDate, todayMillis)) {
@@ -138,7 +110,6 @@ class PlanningViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             repository.deletePlanItem(planItem)
             
-            // 如果是今天的计划项，刷新今日计划
             val calendar = java.util.Calendar.getInstance()
             val todayMillis = calendar.timeInMillis
             if (isSameDay(planItem.planDate, todayMillis)) {
@@ -194,6 +165,7 @@ class PlanningViewModel(application: Application) : AndroidViewModel(application
             _dailyStats.postValue(repository.getDailyStatsByDate(date))
         }
     }
+    
     fun getDailyStatsLive(date: Long): LiveData<DailyStats?> {
         return repository.getDailyStatsLive(date)
     }

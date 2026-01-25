@@ -7,15 +7,8 @@ import com.jingran.taskmanager.data.entity.CourseStats
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 课程Repository
- * 负责课程表相关的数据访问操作
- */
-@Singleton
-class CourseRepository @Inject constructor(
+open class CourseRepository constructor(
     private val courseScheduleDao: CourseScheduleDao
 ) : BaseRepository() {
     

@@ -1,86 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- iOS Reminders Style Task Item -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/itemContainer"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ios_secondary_system_grouped_background"
-    android:paddingStart="@dimen/list_item_padding"
-    android:paddingEnd="@dimen/list_item_padding"
-    android:paddingTop="@dimen/spacing_large"
-    android:paddingBottom="@dimen/spacing_large">
+    android:layout_marginHorizontal="@dimen/spacing_small"
+    android:layout_marginVertical="@dimen/spacing_extra_small"
+    app:cardCornerRadius="@dimen/corner_radius_medium"
+    app:cardElevation="@dimen/elevation_level1"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/outline"
+    tools:context=".ui.adapter.ShortTermTaskAdapter">
 
-    <!-- iOS 风格空心圆复选框 -->
-    <ImageView
-        android:id="@+id/checkBoxComplete"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_circle_outline"
-        android:contentDescription="完成状态"
-        app:tint="@color/ios_blue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- 任务标题 -->
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_large"
-        android:layout_marginEnd="@dimen/spacing_medium"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="任务标题"
-        android:textColor="@color/ios_label"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/textSubtitle"
-        app:layout_constraintEnd_toStartOf="@+id/chevronIcon"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="完成数学作业" />
+        android:padding="@dimen/spacing_large">
 
-    <!-- 副标题行 (截止时间 / 优先级) -->
-    <TextView
-        android:id="@+id/textSubtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_large"
-        android:layout_marginEnd="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_tiny"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/ios_secondary_label"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chevronIcon"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle"
-        tools:text="明天 09:00 · 高优先级 · 60分钟" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- 右侧 Chevron 箭头 (iOS 标准导航指示) -->
-    <ImageView
-        android:id="@+id/chevronIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_chevron_right"
-        android:contentDescription="查看详情"
-        app:tint="@color/ios_tertiary_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="任务标题"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/textSubtitle"
+            app:layout_constraintEnd_toStartOf="@+id/priorityBadge"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="完成数学作业" />
 
-    <!-- 底部分隔线 (iOS 风格: 从文字起始位置开始) -->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/list_divider_height"
-        android:background="@color/ios_separator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textTitle" />
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_extra_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/priorityBadge"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxComplete"
+            app:layout_constraintTop_toBottomOf="@+id/textTitle"
+            tools:text="明天 09:00 · 60分钟" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/priorityBadge"
+            style="@style/Widget.JingRan.Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="高优先级"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:chipBackgroundColor="@color/priority_high"
+            app:chipStrokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

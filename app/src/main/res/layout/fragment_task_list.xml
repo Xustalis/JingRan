@@ -1,66 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/ios_system_grouped_background">
+    android:background="@color/surface"
+    tools:context=".ui.fragment.TaskListFragment">
 
-    <!-- iOS 风格分段控制器 (Segmented Control) 替代 TabLayout -->
-    <FrameLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/ios_system_background"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:background="@color/surface"
+        app:elevation="@dimen/elevation_none">
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleGroup"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            app:checkedButton="@+id/btnShortTerm"
-            app:selectionRequired="true"
-            app:singleSelection="true">
+            android:layout_height="wrap_content"
+            android:background="@color/surface"
+            app:layout_scrollFlags="scroll|enterAlways"
+            style="@style/Widget.JingRan.Toolbar">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnShortTerm"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="短期任务"
-                android:textSize="13sp"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/ios_separator" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:chipSpacingHorizontal="@dimen/spacing_small"
+                app:chipSpacingVertical="@dimen/spacing_small"
+                app:singleSelection="true"
+                app:singleLine="true">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLongTerm"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="长期任务"
-                android:textSize="13sp"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/ios_separator" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipShortTerm"
+                    style="@style/Widget.JingRan.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="短期任务"
+                    app:checkedIconVisible="false" />
 
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLongTerm"
+                    style="@style/Widget.JingRan.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="长期任务"
+                    app:checkedIconVisible="false" />
 
-        <!-- 隐藏原有的 TabLayout 以保持兼容性 (如果代码中引用了它) -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone" />
+            </com.google.android.material.chip.ChipGroup>
 
-    </FrameLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- 任务列表 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTasks"
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_medium"
+            android:paddingBottom="@dimen/bottom_navigation_height"
+            tools:listitem="@layout/item_short_term_task" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="添加任务"
+        app:srcCompat="@drawable/ic_add"
+        style="@style/Widget.JingRan.FloatingActionButton" />
+
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size_extra_large"
+            android:layout_height="@dimen/icon_size_extra_large"
+            android:alpha="0.3"
+            android:contentDescription="空状态"
+            android:src="@drawable/ic_task_empty"
+            app:tint="@color/text_hint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="暂无任务"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonCreateTask"
+            style="@style/Widget.JingRan.Button.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="创建任务" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

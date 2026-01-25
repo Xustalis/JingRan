@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.JingRan" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
+        
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:colorForeground">@color/on_background</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+
+    <style name="Theme.JingRan.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
+        
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:colorForeground">@color/on_background</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.JingRan.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/inverse_primary</item>
+        <item name="colorPrimaryDark">@color/on_primary_inverse</item>
+        <item name="colorAccent">@color/inverse_primary</item>
+        
+        <item name="android:colorBackground">@color/md_theme_dark_background</item>
+        <item name="android:colorForeground">@color/md_theme_dark_onBackground</item>
+        <item name="android:textColorPrimary">@color/md_theme_dark_onSurface</item>
+        <item name="android:textColorSecondary">@color/md_theme_dark_onSurface</item>
+        
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.JingRan.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
+        
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:colorForeground">@color/on_background</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+
+    <style name="IOSNavigationTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ios_blue</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="IOSButton">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_blue</item>
+        <item name="android:background">@drawable/ios_button_background</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="IOSFootnote">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_label_tertiary</item>
+    </style>
+
+    <style name="IOSCaption2">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_label_tertiary</item>
+    </style>
+
+    <style name="IOSHeadline">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ios_label</item>
+    </style>
+
+    <style name="IOSSubhead">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_label</item>
+    </style>
+
+    <style name="IOSCallout">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_label</item>
+    </style>
+
+    <style name="IOSBody">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/ios_label</item>
+    </style>
+
+    <style name="Widget.JingRan.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/surface</item>
+        <item name="titleTextColor">@color/on_surface</item>
+        <item name="subtitleTextColor">@color/text_secondary</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="Widget.JingRan.BottomNavigation" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@color/surface_container_high</item>
+        <item name="itemIconTint">@color/on_surface_variant</item>
+        <item name="itemTextColor">@color/on_surface_variant</item>
+        <item name="itemRippleColor">@color/ripple_light</item>
+    </style>
+
+    <style name="Widget.JingRan.Card.Filled" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/surface_container_high</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.JingRan.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/surface_container</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.JingRan.Chip.Filter" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/surface_container</item>
+        <item name="chipStrokeColor">@color/outline</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">16dp</item>
+    </style>
+
+    <style name="Widget.JingRan.Chip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/surface_container</item>
+        <item name="chipStrokeColor">@color/outline</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">16dp</item>
+    </style>
+
+    <style name="Widget.JingRan.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="Widget.JingRan.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="Widget.JingRan.Button.Icon.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="Widget.JingRan.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="fabSize">normal</item>
+    </style>
+</resources>

@@ -6,6 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.jingran.taskmanager.data.dao.ShortTermTaskDao
 import com.jingran.taskmanager.data.dao.LongTermTaskDao
@@ -19,6 +20,7 @@ import com.jingran.taskmanager.data.dao.SyncRecordDao
 import com.jingran.taskmanager.data.dao.BackupRecordDao
 import com.jingran.taskmanager.data.entity.ShortTermTask
 import com.jingran.taskmanager.data.entity.LongTermTask
+import com.jingran.taskmanager.data.entity.LongTermTaskExtension
 import com.jingran.taskmanager.data.entity.SubTask
 import com.jingran.taskmanager.data.entity.PlanItem
 import com.jingran.taskmanager.data.entity.FixedSchedule
@@ -42,6 +44,7 @@ import javax.crypto.KeyGenerator
     entities = [
         ShortTermTask::class,
         LongTermTask::class,
+        LongTermTaskExtension::class,
         SubTask::class,
         PlanItem::class,
         FixedSchedule::class,
@@ -51,7 +54,7 @@ import javax.crypto.KeyGenerator
         SyncRecord::class,
         BackupRecord::class
     ],
-    version = 5,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(TaskTypeConverters::class)
@@ -92,6 +95,39 @@ abstract class TaskDatabase : RoomDatabase() {
         private const val ENCRYPTION_KEY_ALIAS = "task_db_key"
         private const val TAG = "TaskDatabase"
         
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE short_term_tasks DROP COLUMN IF EXISTS parent_long_term_task_id")
+            }
+        }
+        
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS long_term_task_extensions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        long_term_task_id INTEGER NOT NULL,
+                        estimated_total_hours INTEGER,
+                        actual_total_hours INTEGER NOT NULL DEFAULT 0,
+                        milestone_count INTEGER NOT NULL DEFAULT 0,
+                        completed_milestones INTEGER NOT NULL DEFAULT 0,
+                        auto_generate_subtasks INTEGER NOT NULL DEFAULT 1,
+                        next_review_date INTEGER,
+                        notes TEXT,
+                        attachments TEXT,
+                        tags TEXT,
+                        reminder_settings TEXT,
+                        custom_fields TEXT,
+                        create_time INTEGER NOT NULL,
+                        last_modified_time INTEGER NOT NULL,
+                        FOREIGN KEY(long_term_task_id) REFERENCES long_term_tasks(id) ON DELETE CASCADE
+                    )
+                """.trimIndent())
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_long_term_task_extensions_long_term_task_id ON long_term_task_extensions(long_term_task_id)")
+            }
+        }
+        
         fun getDatabase(context: Context): TaskDatabase {
             Log.d(TAG, "getDatabase called")
             
@@ -106,6 +142,7 @@ abstract class TaskDatabase : RoomDatabase() {
                     )
                     // .openHelperFactory(getSupportFactory(context)) // 暂时禁用加密
                     .addCallback(DatabaseCallback())
+                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
                     .fallbackToDestructiveMigration() // 添加这行以避免迁移问题
                     .build()
                     

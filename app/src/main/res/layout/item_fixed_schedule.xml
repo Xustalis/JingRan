@@ -17,7 +17,7 @@
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/text_view_time"
@@ -45,7 +45,7 @@
         android:background="@color/ios_green"
         app:layout_constraintStart_toEndOf="@id/timeLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- Center: Content -->
     <LinearLayout
@@ -56,7 +56,7 @@
         app:layout_constraintStart_toEndOf="@id/indicatorLine"
         app:layout_constraintEnd_toStartOf="@id/statusLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/text_view_title"
@@ -80,6 +80,19 @@
             android:drawableStart="@drawable/ic_location"
             android:drawablePadding="4dp"
             app:drawableTint="@color/ios_label_secondary" />
+
+        <TextView
+            android:id="@+id/text_view_description"
+            style="@style/IOSFootnote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Description"
+            android:textColor="@color/ios_label_tertiary"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 
     <!-- Right: Identifier -->
@@ -91,7 +104,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/image_view_fixed"

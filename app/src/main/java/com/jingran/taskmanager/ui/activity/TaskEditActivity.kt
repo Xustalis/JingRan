@@ -8,10 +8,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.chip.ChipGroup
 import com.jingran.taskmanager.R
 import com.jingran.taskmanager.data.entity.EnergyLevel
 import com.jingran.taskmanager.data.entity.LongTermTask
@@ -22,7 +24,6 @@ import com.jingran.taskmanager.ui.component.IOSStyleDateTimePicker
 import com.jingran.taskmanager.ui.component.IOSStylePriorityPicker
 import com.jingran.taskmanager.viewmodel.LongTermTaskViewModel
 import com.jingran.taskmanager.viewmodel.ShortTermTaskViewModel
-import com.jingran.utils.ErrorHandlerKt
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
@@ -35,20 +36,17 @@ class TaskEditActivity : AppCompatActivity() {
     }
 
     private lateinit var editTitle: EditText
-    private lateinit var editGoal: EditText
-    private lateinit var editStartTime: TextView
     private lateinit var editDuration: EditText
     private lateinit var editDeadline: TextView
-    private lateinit var editReminderTime: TextView
-    private lateinit var tvPriority: TextView
+    private lateinit var editReminder: TextView
     private lateinit var editDescription: EditText
+    private lateinit var chipGroupPriority: ChipGroup
 
     private lateinit var shortTermTaskViewModel: ShortTermTaskViewModel
     private lateinit var longTermTaskViewModel: LongTermTaskViewModel
 
-    private var selectedStartTime: LocalDateTime? = null
     private var selectedDeadline: LocalDateTime? = null
-    private var selectedReminderTime: LocalDateTime? = null
+    private var selectedReminder: LocalDateTime? = null
     private var currentPriority: TaskPriority = TaskPriority.MEDIUM
 
     private var taskType: String = "short" // 默认为短期任务
@@ -92,40 +90,72 @@ class TaskEditActivity : AppCompatActivity() {
 
     private fun initViews() {
         editTitle = findViewById(R.id.editTitle)
-        editGoal = findViewById(R.id.editGoal)
-        editStartTime = findViewById(R.id.editStartTime)
         editDuration = findViewById(R.id.editDuration)
         editDeadline = findViewById(R.id.editDeadline)
-        editReminderTime = findViewById(R.id.editReminderTime)
-        tvPriority = findViewById(R.id.tvPriority)
+        editReminder = findViewById(R.id.editReminder)
         editDescription = findViewById(R.id.editDescription)
+        chipGroupPriority = findViewById(R.id.chipGroupPriority)
 
         // 设置时间选择器点击事件
-        editStartTime.setOnClickListener { showDateTimePicker(it as TextView, true) }
         editDeadline.setOnClickListener { showDateTimePicker(it as TextView, false) }
-        editReminderTime.setOnClickListener { showDateTimePicker(it as TextView, false) }
+        editReminder.setOnClickListener { showDateTimePicker(it as TextView, false) }
 
         // 设置优先级选择器点击事件
-        tvPriority.setOnClickListener { showPriorityPicker() }
+        chipGroupPriority.setOnCheckedChangeListener { group, checkedId ->
+            currentPriority = when (checkedId) {
+                R.id.chipPriorityLow -> TaskPriority.LOW
+                R.id.chipPriorityMedium -> TaskPriority.MEDIUM
+                R.id.chipPriorityHigh -> TaskPriority.HIGH
+                R.id.chipPriorityUrgent -> TaskPriority.URGENT
+                else -> TaskPriority.MEDIUM
+            }
+        }
 
         // 设置保存按钮点击事件
-        findViewById<View>(R.id.btnSave).setOnClickListener { saveTask() }
+        findViewById<View>(R.id.btnSaveText).setOnClickListener { saveTask() }
+
+        // 取消按钮
+        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+
+        // 删除按钮
+        findViewById<View>(R.id.btnDelete).setOnClickListener { deleteTask() }
+    }
+
+    private fun deleteTask() {
+        AlertDialog.Builder(this)
+            .setTitle("删除任务")
+            .setMessage("确定要删除这个任务吗？此操作无法撤销。")
+            .setPositiveButton("删除") { _, _ ->
+                lifecycleScope.launch {
+                    if (taskType == "short") {
+                        loadedShortTermTask?.let { shortTermTaskViewModel.deleteShortTermTask(it) }
+                    } else {
+                        loadedLongTermTask?.let { longTermTaskViewModel.deleteLongTermTask(it) }
+                    }
+                    finish()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
     }
 
     private fun adjustUIByTaskType() {
         if (taskType == "short") {
-            // 短期任务显示开始时间和结束时间
-            findViewById<View>(R.id.layoutStartTime).visibility = View.VISIBLE
-            findViewById<View>(R.id.layoutDuration).visibility = View.VISIBLE
-            findViewById<View>(R.id.layoutDeadline).visibility = View.VISIBLE
-            findViewById<View>(R.id.layoutGoal).visibility = View.GONE
+            // 短期任务
+            findViewById<View>(R.id.textInputLayoutDuration).visibility = View.VISIBLE
+            findViewById<View>(R.id.textInputLayoutDeadline).visibility = View.VISIBLE
+            findViewById<View>(R.id.textInputLayoutReminder).visibility = View.VISIBLE
+            findViewById<View>(R.id.switchFlexible).visibility = View.VISIBLE
         } else {
-            // 长期任务显示截止日期
-            findViewById<View>(R.id.layoutStartTime).visibility = View.GONE
-            findViewById<View>(R.id.layoutDuration).visibility = View.GONE
-            findViewById<View>(R.id.layoutDeadline).visibility = View.VISIBLE
-            findViewById<View>(R.id.layoutGoal).visibility = View.VISIBLE
+            // 长期任务
+            findViewById<View>(R.id.textInputLayoutDuration).visibility = View.GONE
+            findViewById<View>(R.id.textInputLayoutDeadline).visibility = View.VISIBLE
+            findViewById<View>(R.id.textInputLayoutReminder).visibility = View.VISIBLE
+            findViewById<View>(R.id.switchFlexible).visibility = View.GONE
         }
+        
+        // 编辑模式显示删除按钮
+        findViewById<View>(R.id.btnDelete).visibility = if (isEditMode) View.VISIBLE else View.GONE
     }
 
     private fun showDateTimePicker(textView: TextView, isStartTime: Boolean) {
@@ -142,15 +172,8 @@ class TaskEditActivity : AppCompatActivity() {
                         textView.text = formattedDateTime
 
                         when (textView.id) {
-                            R.id.editStartTime -> selectedStartTime = selectedDateTime
                             R.id.editDeadline -> selectedDeadline = selectedDateTime
-                            R.id.editReminderTime -> selectedReminderTime = selectedDateTime
-                        }
-
-                        // 如果是开始时间，自动设置结束时间为开始时间后1小时
-                        if (isStartTime && selectedDeadline == null) {
-                            selectedDeadline = selectedDateTime.plusHours(1)
-                            editDeadline.text = selectedDeadline?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                            R.id.editReminder -> selectedReminder = selectedDateTime
                         }
                     },
                     now.hour,
@@ -229,8 +252,8 @@ class TaskEditActivity : AppCompatActivity() {
                             }
                             
                             fromEpochMillis(task.nextReviewDate)?.let { time ->
-                                selectedReminderTime = time
-                                editReminderTime.text = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                selectedReminder = time
+                                editReminder.text = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                             }
                             
                             currentPriority = task.priority
@@ -290,16 +313,6 @@ class TaskEditActivity : AppCompatActivity() {
     }
     
     private suspend fun saveShortTermTask(title: String) {
-        // 验证起始时间必须输入
-        val startTime = selectedStartTime
-        if (startTime == null) {
-            runOnUiThread {
-                editStartTime.error = "请选择起始时间"
-                Toast.makeText(this@TaskEditActivity, "起始时间为必填项", Toast.LENGTH_SHORT).show()
-            }
-            return
-        }
-        
         val durationText = editDuration.text.toString().trim()
         val durationMinutes = durationText.toIntOrNull()
         if (durationMinutes == null || durationMinutes <= 0) {
@@ -311,16 +324,15 @@ class TaskEditActivity : AppCompatActivity() {
         }
         
         val description = editDescription.text.toString().trim()
-        val startMillis = toEpochMillis(startTime)
-        val endMillis = toEpochMillis(selectedDeadline)
-        val reminderMillis = toEpochMillis(selectedReminderTime)
+        val deadlineMillis = toEpochMillis(selectedDeadline)
+        val reminderMillis = toEpochMillis(selectedReminder)
         
         val existingTask = loadedShortTermTask
         val task = if (isEditMode && existingTask != null) {
             existingTask.copy(
                 title = title,
                 description = description,
-                deadline = endMillis,
+                deadline = deadlineMillis,
                 duration = durationMinutes,
                 priority = currentPriority,
                 reminderTime = reminderMillis,
@@ -388,30 +400,6 @@ class TaskEditActivity : AppCompatActivity() {
         }
     }
     
-    private fun updateTimeDisplay() {
-        selectedStartTime?.let {
-            editStartTime.text = it.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-        }
-        
-        selectedDeadline?.let {
-            editDeadline.text = it.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-        }
-        
-        selectedReminderTime?.let {
-            editReminderTime.text = it.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-        }
-    }
-    
-    private fun updatePriorityDisplay() {
-        val priorityText = when (currentPriority) {
-            TaskPriority.HIGH -> "高"
-            TaskPriority.MEDIUM -> "中"
-            TaskPriority.LOW -> "低"
-            TaskPriority.URGENT -> "紧急"
-        }
-        tvPriority.text = priorityText
-    }
-
     private fun toEpochMillis(dateTime: LocalDateTime?): Long? {
         return dateTime?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
     }

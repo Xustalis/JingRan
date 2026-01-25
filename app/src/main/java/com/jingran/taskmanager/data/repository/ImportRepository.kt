@@ -7,15 +7,8 @@ import com.jingran.taskmanager.data.entity.ImportRecord
 import com.jingran.taskmanager.data.entity.ImportStatistics
 import com.jingran.taskmanager.data.entity.ImportStatus
 import com.jingran.taskmanager.data.entity.ImportSource
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 导入Repository
- * 负责数据导入记录相关的数据访问操作
- */
-@Singleton
-open class ImportRepository @Inject constructor(
+open class ImportRepository constructor(
     private val importRecordDao: ImportRecordDao
 ) : BaseRepository() {
     

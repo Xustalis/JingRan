@@ -1,135 +1,122 @@
 package com.jingran.taskmanager.data.repository
 
 import androidx.lifecycle.LiveData
-import com.jingran.taskmanager.data.dao.LongTermTaskDao
-import com.jingran.taskmanager.data.dao.SubTaskDao
-import com.jingran.taskmanager.data.dao.PlanItemDao
 import com.jingran.taskmanager.data.entity.LongTermTask
-import com.jingran.taskmanager.data.entity.ShortTermTask
-import com.jingran.taskmanager.data.entity.SubTask
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.jingran.taskmanager.data.dao.LongTermTaskDao
+import com.jingran.utils.LogManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-/**
- * 长期任务Repository
- * 负责长期任务相关的数据访问操作
- */
-@Singleton
-class LongTermTaskRepository @Inject constructor(
-    private val longTermTaskDao: LongTermTaskDao,
-    private val subTaskDao: SubTaskDao,
-    private val planItemDao: PlanItemDao
+open class LongTermTaskRepository(
+    private val longTermTaskDao: LongTermTaskDao
 ) : BaseRepository() {
     
-    /**
-     * 获取所有长期任务
-     */
     fun getAllTasks(): LiveData<List<LongTermTask>> = longTermTaskDao.getAllTasks()
     
-    /**
-     * 获取未完成的长期任务
-     */
     fun getIncompleteTasks(): LiveData<List<LongTermTask>> = longTermTaskDao.getIncompleteTasks()
     
-    /**
-     * 根据ID获取长期任务
-     */
-    suspend fun getTaskById(id: Long): LongTermTask? = ioCall {
+    suspend fun getTaskById(id: Long): LongTermTask? = withContext(Dispatchers.IO) {
         longTermTaskDao.getTaskById(id)
     }
     
-    /**
-     * 插入长期任务
-     */
-    suspend fun insertTask(task: LongTermTask): Long = ioCall {
-        longTermTaskDao.insertTask(task)
+    fun getTaskByIdLiveData(id: Long): LiveData<LongTermTask?> {
+        return longTermTaskDao.getTaskByIdLiveData(id)
     }
     
-    /**
-     * 更新长期任务
-     */
-    suspend fun updateTask(task: LongTermTask) = ioCall {
-        longTermTaskDao.updateTask(task)
-    }
-    
-    /**
-     * 删除长期任务
-     */
-    suspend fun deleteTask(task: LongTermTask) = ioCall {
-        // 获取所有子任务
-        val subTasks = subTaskDao.getSubTasksByLongTaskId(task.id)
+    suspend fun insertTask(task: LongTermTask): Long {
+        validateNotNull(task, "task")
+        validateNotEmpty(task.title, "task.title")
         
-        // 删除所有子任务的计划项
-        subTasks.forEach { subTask ->
-            planItemDao.deletePlanItemsByTaskId(subTask.shortTaskId)
+        return ioCall("插入长期任务") {
+            logDbOperation("INSERT", "long_term_tasks", "title: ${task.title}")
+            longTermTaskDao.insertTask(task)
         }
-        
-        // 删除子任务关联
-        subTaskDao.deleteSubTasksByLongTaskId(task.id)
-        
-        // 删除长期任务
-        longTermTaskDao.deleteTask(task)
     }
     
-    /**
-     * 更新任务完成状态
-     */
-    suspend fun updateTaskCompletion(id: Long, isCompleted: Boolean) = ioCall {
+    suspend fun updateTask(task: LongTermTask) {
+        validateNotNull(task, "task")
+        validateInput(task.id > 0, "任务ID必须大于0")
+        
+        ioCall("更新长期任务") {
+            logDbOperation("UPDATE", "long_term_tasks", "id: ${task.id}, title: ${task.title}")
+            longTermTaskDao.updateTask(task)
+        }
+    }
+    
+    suspend fun deleteTask(task: LongTermTask) {
+        validateNotNull(task, "task")
+        validateInput(task.id > 0, "任务ID必须大于0")
+        
+        ioCall("删除长期任务") {
+            logDbOperation("DELETE", "long_term_tasks", "id: ${task.id}, title: ${task.title}")
+            longTermTaskDao.deleteTask(task)
+        }
+    }
+    
+    suspend fun updateTaskCompletion(id: Long, isCompleted: Boolean) = withContext(Dispatchers.IO) {
         longTermTaskDao.updateTaskCompletion(id, isCompleted)
     }
     
-    /**
-     * 获取长期任务的子任务
-     */
-    fun getSubTasksByLongTaskId(longTaskId: Long): LiveData<List<ShortTermTask>> = 
-        subTaskDao.getShortTasksByLongTaskId(longTaskId)
-    
-    /**
-     * 获取长期任务的未完成子任务
-     */
-    suspend fun getIncompleteSubTasksByLongTaskId(longTaskId: Long): List<ShortTermTask> = ioCall {
-        subTaskDao.getIncompleteShortTasksByLongTaskId(longTaskId)
-    }
-    
-    /**
-     * 添加子任务关联
-     */
-    suspend fun addSubTask(longTaskId: Long, shortTaskId: Long) = ioCall {
-        val subTask = SubTask(longTaskId = longTaskId, shortTaskId = shortTaskId)
-        subTaskDao.insertSubTask(subTask)
-    }
-    
-    /**
-     * 移除子任务关联
-     */
-    suspend fun removeSubTask(longTaskId: Long, shortTaskId: Long) = ioCall {
-        val subTasks = subTaskDao.getSubTasksByLongTaskId(longTaskId)
-        val subTask = subTasks.find { it.shortTaskId == shortTaskId }
-        subTask?.let {
-            subTaskDao.deleteSubTask(it)
+    suspend fun getAllTasksList(): List<LongTermTask> = ioCall("获取所有长期任务") {
+        try {
+            longTermTaskDao.getAllTasks().value ?: emptyList()
+        } catch (e: Exception) {
+            LogManager.e(tag, "获取长期任务列表失败，返回空列表", e)
+            emptyList()
         }
     }
     
-    /**
-     * 根据短期任务ID获取子任务关联
-     */
-    suspend fun getSubTaskByShortTaskId(shortTaskId: Long): SubTask? = ioCall {
-        subTaskDao.getSubTaskByShortTaskId(shortTaskId)
+    suspend fun getAllTasksSync(): List<LongTermTask> = ioCall {
+        longTermTaskDao.getAllTasksSync()
     }
     
-    /**
-     * 检查并更新长期任务的完成状态
-     */
-    suspend fun checkAndUpdateTaskCompletion(longTaskId: Long) = ioCall {
-        val incompleteTasks = subTaskDao.getIncompleteShortTasksByLongTaskId(longTaskId)
-        val isCompleted = incompleteTasks.isEmpty()
-        longTermTaskDao.updateTaskCompletion(longTaskId, isCompleted)
+    suspend fun insertTasksBatch(tasks: List<LongTermTask>): List<Long> = ioCall("批量插入长期任务") {
+        validateInput(tasks.isNotEmpty(), "任务列表不能为空")
+        
+        tasks.forEach { task ->
+            validateLongTermTaskData(task)
+        }
+        
+        val results = mutableListOf<Long>()
+        try {
+            tasks.forEach { task ->
+                val id = longTermTaskDao.insertTask(task)
+                results.add(id)
+                logDbOperation("INSERT", "long_term_tasks", "ID: $id, Title: ${task.title}")
+            }
+            LogManager.d(tag, "成功批量插入${tasks.size}个长期任务")
+            results
+        } catch (e: Exception) {
+            LogManager.e(tag, "批量插入长期任务失败", e)
+            throw e
+        }
     }
     
-    /**
-     * 获取所有子任务关联记录
-     */
-    suspend fun getAllSubTasks(): List<SubTask> = ioCall {
-        subTaskDao.getAllSubTasks()
+    suspend fun updateTasksBatch(tasks: List<LongTermTask>) = ioCall("批量更新长期任务") {
+        validateInput(tasks.isNotEmpty(), "任务列表不能为空")
+        
+        tasks.forEach { task ->
+            validateInput(task.id > 0, "任务ID必须大于0")
+            validateLongTermTaskData(task)
+        }
+        
+        try {
+            tasks.forEach { task ->
+                longTermTaskDao.updateTask(task)
+                logDbOperation("UPDATE", "long_term_tasks", "ID: ${task.id}, Title: ${task.title}")
+            }
+            LogManager.d(tag, "成功批量更新${tasks.size}个长期任务")
+        } catch (e: Exception) {
+            LogManager.e(tag, "批量更新长期任务失败", e)
+            throw e
+        }
+    }
+    
+    private fun validateLongTermTaskData(task: LongTermTask) {
+        validateNotNull(task, "task")
+        validateNotEmpty(task.title, "task.title")
+        validateInput(task.title.length <= 200, "任务标题不能超过200个字符")
+        validateInput(task.description.length <= 1000, "任务描述不能超过1000个字符")
+        validateInput(task.startDate <= task.endDate, "开始时间不能晚于结束时间")
     }
 }

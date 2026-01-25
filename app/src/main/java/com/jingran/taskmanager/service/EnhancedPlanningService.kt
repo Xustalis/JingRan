@@ -7,15 +7,9 @@ import java.util.*
 import kotlin.math.min
 import kotlin.math.max
 
-/**
- * 增强的智能规划服务
- * 根据PRD文档要求，实现智能任务规划算法
- * 支持固定日程、时间冲突检测、能量水平匹配和自动调整
- */
 open class EnhancedPlanningService(private val repository: TaskRepository) {
     
     companion object {
-        // 默认工作时段：9:00-12:00、14:00-18:00、19:00-22:00
         private const val MORNING_START_HOUR = 9
         private const val MORNING_END_HOUR = 12
         private const val AFTERNOON_START_HOUR = 14
@@ -23,40 +17,25 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         private const val EVENING_START_HOUR = 19
         private const val EVENING_END_HOUR = 22
         
-        // 任务间隔时间（分钟）
         private const val TASK_INTERVAL_MINUTES = 5
-        
-        // 最小任务时长（分钟）
         private const val MIN_TASK_DURATION = 15
     }
     
-    /**
-     * 生成智能日程规划
-     * @param date 计划日期
-     * @param tasks 待安排的任务列表
-     * @param userWorkingHours 用户自定义工作时段（可选）
-     * @return 生成的计划项列表
-     */
     suspend fun generateIntelligentPlan(
         date: Long, 
         tasks: List<ShortTermTask>,
         userWorkingHours: List<Pair<Int, Int>>? = null
     ): PlanningResult {
         
-        // 1. 获取当日固定日程
         val dayOfWeek = getDayOfWeek(date)
         val fixedSchedules = repository.getFixedSchedulesByDay(dayOfWeek)
         
-        // 2. 获取可用时间段
         val availableSlots = getAvailableTimeSlots(date, fixedSchedules, userWorkingHours)
         
-        // 3. 按智能规则排序任务
         val sortedTasks = sortTasksIntelligently(tasks, date)
         
-        // 4. 分配任务到时间段
         val (plannedItems, unscheduledTasks) = allocateTasksToSlots(sortedTasks, availableSlots, date)
         
-        // 5. 生成统计信息
         val stats = generatePlanningStats(tasks, plannedItems, unscheduledTasks)
         
         return PlanningResult(
@@ -67,13 +46,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         )
     }
     
-    /**
-     * 插入紧急任务并自动调整现有计划
-     * @param emergencyTask 紧急任务
-     * @param currentPlan 当前计划
-     * @param date 日期
-     * @return 调整后的计划结果
-     */
     suspend fun insertEmergencyTask(
         emergencyTask: ShortTermTask,
         currentPlan: List<PlanItem>,
@@ -84,7 +56,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         val fixedSchedules = repository.getFixedSchedulesByDay(dayOfWeek)
         val availableSlots = getAvailableTimeSlots(date, fixedSchedules)
         
-        // 寻找最佳插入位置
         val insertionOptions = findInsertionOptions(emergencyTask, currentPlan, availableSlots)
         
         if (insertionOptions.isEmpty()) {
@@ -96,7 +67,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
             )
         }
         
-        // 选择最佳插入方案
         val bestOption = selectBestInsertionOption(insertionOptions)
         
         return EmergencyInsertionResult(
@@ -107,13 +77,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         )
     }
     
-    /**
-     * 智能任务排序
-     * 排序规则：
-     * 1. 紧急且当日截止的高优先级任务
-     * 2. 不可调整时间的任务
-     * 3. 按优先级、截止日期、时长综合排序
-     */
     private fun sortTasksIntelligently(tasks: List<ShortTermTask>, planDate: Long): List<ShortTermTask> {
         val calendar = Calendar.getInstance().apply {
             timeInMillis = planDate
@@ -126,7 +89,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         val dayEnd = dayStart + (24 * 60 * 60 * 1000L)
         
         return tasks.sortedWith { task1, task2 ->
-            // 1. 紧急任务优先
             val task1IsEmergency = task1.taskType == TaskType.EMERGENCY
             val task2IsEmergency = task2.taskType == TaskType.EMERGENCY
             
@@ -134,7 +96,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                 task1IsEmergency && !task2IsEmergency -> -1
                 !task1IsEmergency && task2IsEmergency -> 1
                 else -> {
-                    // 2. 不可调整时间的任务优先
                     val task1IsInflexible = !task1.isFlexible
                     val task2IsInflexible = !task2.isFlexible
                     
@@ -142,7 +103,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                         task1IsInflexible && !task2IsInflexible -> -1
                         !task1IsInflexible && task2IsInflexible -> 1
                         else -> {
-                            // 3. 当日截止的高优先级任务
                             val task1IsUrgent = task1.priority == TaskPriority.HIGH && 
                                     task1.deadline != null && 
                                     task1.deadline >= dayStart && 
@@ -157,22 +117,18 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                                 task1IsUrgent && !task2IsUrgent -> -1
                                 !task1IsUrgent && task2IsUrgent -> 1
                                 else -> {
-                                    // 4. 按优先级排序
                                     val priorityComparison = task1.priority.ordinal.compareTo(task2.priority.ordinal)
                                     if (priorityComparison != 0) {
                                         priorityComparison
                                     } else {
-                                        // 5. 按截止日期排序
                                         val deadlineComparison = compareDeadlines(task1.deadline, task2.deadline)
                                         if (deadlineComparison != 0) {
                                             deadlineComparison
                                         } else {
-                                            // 6. 按能量水平匹配当前时间段
                                             val energyComparison = compareEnergyLevels(task1.energyLevel, task2.energyLevel)
                                             if (energyComparison != 0) {
                                                 energyComparison
                                             } else {
-                                                // 7. 按时长排序（短任务优先）
                                                 task1.duration.compareTo(task2.duration)
                                             }
                                         }
@@ -186,9 +142,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         }
     }
     
-    /**
-     * 获取可用时间段（排除固定日程）
-     */
     private fun getAvailableTimeSlots(
         date: Long, 
         fixedSchedules: List<FixedSchedule>,
@@ -204,7 +157,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         }
         val dayStart = calendar.timeInMillis
         
-        // 使用用户自定义工作时段或默认时段
         val workingHours = userWorkingHours ?: listOf(
             Pair(MORNING_START_HOUR, MORNING_END_HOUR),
             Pair(AFTERNOON_START_HOUR, AFTERNOON_END_HOUR),
@@ -213,20 +165,15 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         
         val allSlots = mutableListOf<TimeSlot>()
         
-        // 生成基础时间段
         for ((startHour, endHour) in workingHours) {
             val slotStart = dayStart + (startHour * 60 * 60 * 1000L)
             val slotEnd = dayStart + (endHour * 60 * 60 * 1000L)
             allSlots.add(TimeSlot(slotStart, slotEnd))
         }
         
-        // 排除固定日程占用的时间
         return subtractFixedSchedules(allSlots, fixedSchedules)
     }
     
-    /**
-     * 从可用时间段中减去固定日程
-     */
     private fun subtractFixedSchedules(
         availableSlots: List<TimeSlot>,
         fixedSchedules: List<FixedSchedule>
@@ -248,34 +195,25 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         return resultSlots.filter { it.duration >= MIN_TASK_DURATION * 60 * 1000L }
     }
     
-    /**
-     * 从时间段中减去指定时间范围
-     */
     private fun subtractTimeRange(slot: TimeSlot, excludeStart: Long, excludeEnd: Long): List<TimeSlot> {
         val result = mutableListOf<TimeSlot>()
         
-        // 没有重叠
         if (excludeEnd <= slot.startTime || excludeStart >= slot.endTime) {
             result.add(slot)
             return result
         }
         
-        // 前半部分
         if (slot.startTime < excludeStart) {
             result.add(TimeSlot(slot.startTime, min(excludeStart, slot.endTime)))
         }
         
-        // 后半部分
         if (slot.endTime > excludeEnd) {
-            result.add(TimeSlot(kotlin.math.max(excludeEnd, slot.startTime), slot.endTime))
+            result.add(TimeSlot(max(excludeEnd, slot.startTime), slot.endTime))
         }
         
         return result
     }
     
-    /**
-     * 将任务分配到时间段
-     */
     private fun allocateTasksToSlots(
         tasks: List<ShortTermTask>,
         availableSlots: List<TimeSlot>,
@@ -294,7 +232,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                 val slot = remainingSlots[i]
                 
                 if (slot.duration >= taskDurationMs) {
-                    // 分配任务到这个时间段
                     val taskStartTime = slot.startTime
                     val taskEndTime = taskStartTime + taskDurationMs
                     
@@ -307,7 +244,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                         )
                     )
                     
-                    // 更新剩余时间段
                     val newSlotStart = taskEndTime + (TASK_INTERVAL_MINUTES * 60 * 1000L)
                     if (newSlotStart < slot.endTime) {
                         remainingSlots[i] = TimeSlot(newSlotStart, slot.endTime)
@@ -328,7 +264,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         return Pair(plannedItems, unscheduledTasks)
     }
     
-    // 辅助方法
     private fun getDayOfWeek(date: Long): Int {
         val calendar = Calendar.getInstance().apply { timeInMillis = date }
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
@@ -343,12 +278,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         }
     }
     
-    /**
-     * 比较能量水平，根据当前时间段匹配最适合的任务
-     * 上午：高能量任务优先
-     * 下午：中等能量任务优先
-     * 晚上：低能量任务优先
-     */
     private fun compareEnergyLevels(energy1: EnergyLevel, energy2: EnergyLevel): Int {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         
@@ -405,7 +334,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
         val options = mutableListOf<InsertionOption>()
         val emergencyDuration = emergencyTask.duration * 60 * 1000L
         
-        // 选项1：在现有空闲时间段中插入
         for (slot in availableSlots) {
             if (slot.duration >= emergencyDuration) {
                 val newPlanItem = PlanItem(
@@ -423,13 +351,12 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                     InsertionOption(
                         adjustedPlan = adjustedPlan,
                         postponedTasks = emptyList(),
-                        impactScore = 0.0f // 无影响，最佳选择
+                        impactScore = 0.0f
                     )
                 )
             }
         }
         
-        // 选项2：推迟低优先级任务来腾出空间
         if (options.isEmpty()) {
             val sortedPlan = currentPlan.sortedBy { it.startTime }
             
@@ -437,16 +364,13 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                 val planItem = sortedPlan[i]
                 val task = runBlocking { repository.getShortTermTaskById(planItem.taskId) }
                 
-                // 只推迟低优先级或中等优先级的任务
                 if (task != null && (task.priority == TaskPriority.LOW || task.priority == TaskPriority.MEDIUM)) {
                     val adjustedPlan = sortedPlan.toMutableList()
                     val postponedTasks = mutableListOf<ShortTermTask>()
                     
-                    // 移除当前任务
                     adjustedPlan.removeAt(i)
                     postponedTasks.add(task)
                     
-                    // 插入紧急任务到这个位置
                     val newPlanItem = PlanItem(
                         taskId = emergencyTask.id,
                         planDate = planItem.planDate,
@@ -455,7 +379,6 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                     )
                     adjustedPlan.add(i, newPlanItem)
                     
-                    // 计算影响分数（推迟的任务数量和优先级）
                     val impactScore = calculateImpactScore(postponedTasks)
                     
                     options.add(
@@ -469,12 +392,10 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
             }
         }
         
-        // 选项3：在一天的开始或结束插入（如果有时间）
         if (options.isEmpty()) {
             val dayStart = getDayStartTime(currentPlan.firstOrNull()?.planDate ?: System.currentTimeMillis())
             val dayEnd = dayStart + (24 * 60 * 60 * 1000L)
             
-            // 尝试在一天开始插入
             val earliestPlan = currentPlan.minByOrNull { it.startTime }
             if (earliestPlan != null && (earliestPlan.startTime - dayStart) >= emergencyDuration) {
                 val newPlanItem = PlanItem(
@@ -492,7 +413,7 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
                     InsertionOption(
                         adjustedPlan = adjustedPlan,
                         postponedTasks = emptyList(),
-                        impactScore = 1.0f // 轻微影响，改变了一天的开始时间
+                        impactScore = 1.0f
                     )
                 )
             }
@@ -526,12 +447,10 @@ open class EnhancedPlanningService(private val repository: TaskRepository) {
     }
     
     private fun selectBestInsertionOption(options: List<InsertionOption>): InsertionOption {
-        // 选择最佳插入方案（影响最小的方案）
         return options.minByOrNull { it.postponedTasks.size } ?: options.first()
     }
 }
 
-// 数据类定义
 data class TimeSlot(
     val startTime: Long,
     val endTime: Long

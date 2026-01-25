@@ -17,7 +17,7 @@
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/text_view_time"
@@ -45,7 +45,7 @@
         android:background="@color/ios_blue"
         app:layout_constraintStart_toEndOf="@id/timeLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- Center: Content -->
     <LinearLayout
@@ -56,7 +56,7 @@
         app:layout_constraintStart_toEndOf="@id/indicatorLine"
         app:layout_constraintEnd_toStartOf="@id/statusLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/text_view_task_title"
@@ -88,7 +88,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_bottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/image_view_status"

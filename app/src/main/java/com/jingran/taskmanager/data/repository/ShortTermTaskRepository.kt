@@ -1,113 +1,126 @@
 package com.jingran.taskmanager.data.repository
 
 import androidx.lifecycle.LiveData
-import com.jingran.taskmanager.data.dao.ShortTermTaskDao
-import com.jingran.taskmanager.data.dao.PlanItemDao
-import com.jingran.taskmanager.data.dao.SubTaskDao
 import com.jingran.taskmanager.data.entity.ShortTermTask
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.jingran.taskmanager.data.dao.ShortTermTaskDao
+import com.jingran.utils.LogManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-/**
- * 短期任务Repository
- * 负责短期任务相关的数据访问操作
- */
-@Singleton
-class ShortTermTaskRepository @Inject constructor(
-    private val shortTermTaskDao: ShortTermTaskDao,
-    private val planItemDao: PlanItemDao,
-    private val subTaskDao: SubTaskDao
+open class ShortTermTaskRepository(
+    private val shortTermTaskDao: ShortTermTaskDao
 ) : BaseRepository() {
     
-    /**
-     * 获取所有短期任务
-     */
     fun getAllTasks(): LiveData<List<ShortTermTask>> = shortTermTaskDao.getAllTasks()
     
-    /**
-     * 获取未完成的短期任务
-     */
     fun getIncompleteTasks(): LiveData<List<ShortTermTask>> = shortTermTaskDao.getIncompleteTasks()
     
-    /**
-     * 根据ID获取短期任务
-     */
-    suspend fun getTaskById(id: Long): ShortTermTask? = ioCall {
+    suspend fun getTaskById(id: Long): ShortTermTask? = withContext(Dispatchers.IO) {
         shortTermTaskDao.getTaskById(id)
     }
     
-    /**
-     * 根据多个ID获取短期任务
-     */
-    suspend fun getTasksByIds(ids: List<Long>): List<ShortTermTask> = ioCall {
-        shortTermTaskDao.getTasksByIds(ids)
+    fun getTaskByIdLiveData(id: Long): LiveData<ShortTermTask?> {
+        return shortTermTaskDao.getTaskByIdLiveData(id)
     }
     
-    /**
-     * 获取用于规划的任务
-     */
-    suspend fun getTasksForPlanning(today: Long): List<ShortTermTask> = ioCall {
-        shortTermTaskDao.getTasksForPlanning(today)
+    suspend fun insertTask(task: ShortTermTask): Long {
+        validateNotNull(task, "task")
+        validateNotEmpty(task.title, "task.title")
+        
+        return ioCall("插入短期任务") {
+            logDbOperation("INSERT", "short_term_tasks", "title: ${task.title}")
+            shortTermTaskDao.insertTask(task)
+        }
     }
     
-    /**
-     * 获取今天有截止日期的任务
-     */
-    suspend fun getTasksWithDeadlineToday(startOfDay: Long, endOfDay: Long): List<ShortTermTask> = ioCall {
-        shortTermTaskDao.getTasksWithDeadlineToday(startOfDay, endOfDay)
+    suspend fun updateTask(task: ShortTermTask) {
+        validateNotNull(task, "task")
+        validateInput(task.id > 0, "任务ID必须大于0")
+        
+        ioCall("更新短期任务") {
+            logDbOperation("UPDATE", "short_term_tasks", "id: ${task.id}, title: ${task.title}")
+            shortTermTaskDao.updateTask(task)
+        }
     }
     
-    /**
-     * 插入短期任务
-     */
-    suspend fun insertTask(task: ShortTermTask): Long = ioCall {
-        shortTermTaskDao.insertTask(task)
+    suspend fun deleteTask(task: ShortTermTask) {
+        validateNotNull(task, "task")
+        validateInput(task.id > 0, "任务ID必须大于0")
+        
+        ioCall("删除短期任务") {
+            logDbOperation("DELETE", "short_term_tasks", "id: ${task.id}, title: ${task.title}")
+            shortTermTaskDao.deleteTask(task)
+        }
     }
     
-    /**
-     * 更新短期任务
-     */
-    suspend fun updateTask(task: ShortTermTask) = ioCall {
-        shortTermTaskDao.updateTask(task)
-    }
-    
-    /**
-     * 删除短期任务
-     */
-    suspend fun deleteTask(task: ShortTermTask) = ioCall {
-        // 删除相关的计划项
-        planItemDao.deletePlanItemsByTaskId(task.id)
-        // 删除子任务关联
-        subTaskDao.deleteSubTaskByShortTaskId(task.id)
-        // 删除任务
-        shortTermTaskDao.deleteTask(task)
-    }
-    
-    /**
-     * 根据ID删除短期任务
-     */
-    suspend fun deleteTaskById(id: Long) = ioCall {
-        // 删除相关的计划项
-        planItemDao.deletePlanItemsByTaskId(id)
-        // 删除子任务关联
-        subTaskDao.deleteSubTaskByShortTaskId(id)
-        // 删除任务
-        shortTermTaskDao.deleteTaskById(id)
-    }
-    
-    /**
-     * 更新任务完成状态
-     */
-    suspend fun updateTaskCompletion(id: Long, isCompleted: Boolean) = ioCall {
+    suspend fun updateTaskCompletion(id: Long, isCompleted: Boolean) = withContext(Dispatchers.IO) {
         shortTermTaskDao.updateTaskCompletion(id, isCompleted)
     }
     
-    /**
-     * 批量更新任务完成状态
-     */
-    suspend fun updateTasksCompletion(taskIds: List<Long>, isCompleted: Boolean) = ioCall {
-        taskIds.forEach { id ->
-            shortTermTaskDao.updateTaskCompletion(id, isCompleted)
+    suspend fun getTasksWithDeadlineToday(startOfDay: Long, endOfDay: Long): List<ShortTermTask> = withContext(Dispatchers.IO) {
+        shortTermTaskDao.getTasksWithDeadlineToday(startOfDay, endOfDay)
+    }
+    
+    suspend fun getAllTasksList(): List<ShortTermTask> = ioCall("获取所有短期任务") {
+        try {
+            shortTermTaskDao.getAllTasks().value ?: emptyList()
+        } catch (e: Exception) {
+            LogManager.e(tag, "获取短期任务列表失败，返回空列表", e)
+            emptyList()
         }
+    }
+    
+    suspend fun getAllTasksSync(): List<ShortTermTask> = ioCall {
+        shortTermTaskDao.getAllTasksSync()
+    }
+    
+    suspend fun insertTasksBatch(tasks: List<ShortTermTask>): List<Long> = ioCall("批量插入短期任务") {
+        validateInput(tasks.isNotEmpty(), "任务列表不能为空")
+        
+        tasks.forEach { task ->
+            validateTaskData(task)
+        }
+        
+        val results = mutableListOf<Long>()
+        try {
+            tasks.forEach { task ->
+                val id = shortTermTaskDao.insertTask(task)
+                results.add(id)
+                logDbOperation("INSERT", "short_term_tasks", "ID: $id, Title: ${task.title}")
+            }
+            LogManager.d(tag, "成功批量插入${tasks.size}个短期任务")
+            results
+        } catch (e: Exception) {
+            LogManager.e(tag, "批量插入短期任务失败", e)
+            throw e
+        }
+    }
+    
+    suspend fun updateTasksBatch(tasks: List<ShortTermTask>) = ioCall("批量更新短期任务") {
+        validateInput(tasks.isNotEmpty(), "任务列表不能为空")
+        
+        tasks.forEach { task ->
+            validateInput(task.id > 0, "任务ID必须大于0")
+            validateTaskData(task)
+        }
+        
+        try {
+            tasks.forEach { task ->
+                shortTermTaskDao.updateTask(task)
+                logDbOperation("UPDATE", "short_term_tasks", "ID: ${task.id}, Title: ${task.title}")
+            }
+            LogManager.d(tag, "成功批量更新${tasks.size}个短期任务")
+        } catch (e: Exception) {
+            LogManager.e(tag, "批量更新短期任务失败", e)
+            throw e
+        }
+    }
+    
+    private fun validateTaskData(task: ShortTermTask) {
+        validateNotNull(task, "task")
+        validateNotEmpty(task.title, "task.title")
+        validateInput(task.title.length <= 200, "任务标题不能超过200个字符")
+        validateInput(task.description?.length ?: 0 <= 1000, "任务描述不能超过1000个字符")
+        validateInput(task.duration > 0, "预估时长必须大于0")
     }
 }

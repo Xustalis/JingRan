@@ -1,12 +1,14 @@
 # Gradle files
 .gradle/
 build/
+gradle-app.setting
 
 # Kotlin / IntelliJ
 .kotlin/
 .idea/
 *.iml
 *.iws
+*.ipr
 out/
 
 # Android Studio
@@ -16,16 +18,20 @@ captures/
 .externalNativeBuild/
 .cxx/
 *.apk
+*.aab
 *.aar
 *.jks
 *.keystore
+google-services.json
 
 # VS Code
 .vscode/
+*.code-workspace
 
 # Node.js (if applicable)
 node_modules/
 package-lock.json
+yarn.lock
 
 # JingRan Project Specific - Logs and Temporary Files
 *.log
@@ -42,3 +48,152 @@ test_build.bat
 # OS files
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Android specific
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+local.properties
+proguard/
+*.proguard
+*.map
+*.log
+
+# Test results
+test-results/
+androidTest-results/
+
+# Lint
+lint/intermediates/
+lint/generated/
+lint/results/
+lint/reports/
+
+# External libraries
+/captures
+.externalNativeBuild
+.cxx/
+
+# Signing files
+.jks
+*.keystore
+
+# Android Profiling
+*.hprof
+
+# Android NDK
+obj/
+
+# Android Backup
+*.ab
+*.bak
+
+# Temporary files
+*~
+*.swp
+*.swo
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+.nfs*
+
+# JetBrains IDEs
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Gradle
+.gradle/
+build/
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# Android Build
+android/app/build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-wrapper.jar
+
+# Android Lint
+lint/intermediates/
+lint/generated/
+lint/results/
+lint/reports/
+
+# Android Test
+androidTest-results/
+test-results/
+
+# Android Profiler
+*.hprof
+
+# Android Navigation
+.navigation/
+
+# Android External Build
+.externalNativeBuild/
+.cxx/
+
+# Android Signing
+*.jks
+*.keystore
+release.keystore
+
+# Firebase
+google-services.json
+GoogleService-Info.plist
+
+# Crashlytics
+crashlytics-build.properties

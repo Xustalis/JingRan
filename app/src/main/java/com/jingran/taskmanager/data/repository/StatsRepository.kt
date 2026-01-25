@@ -3,15 +3,8 @@ package com.jingran.taskmanager.data.repository
 import androidx.lifecycle.LiveData
 import com.jingran.taskmanager.data.dao.DailyStatsDao
 import com.jingran.taskmanager.data.entity.DailyStats
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 统计Repository
- * 负责效率统计相关的数据访问操作
- */
-@Singleton
-class StatsRepository @Inject constructor(
+open class StatsRepository constructor(
     private val dailyStatsDao: DailyStatsDao
 ) : BaseRepository() {
     

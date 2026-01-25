@@ -6,15 +6,8 @@ import com.jingran.taskmanager.data.repository.DataFixResult
 import com.jingran.utils.LogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 数据一致性服务
- * 负责检查和修复数据库中的一致性问题
- */
-@Singleton
-class DataConsistencyService @Inject constructor(
+class DataConsistencyService constructor(
     private val taskRepository: TaskRepository
 ) {
     

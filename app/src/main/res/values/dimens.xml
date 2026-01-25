@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 标准间距 -->
-    <dimen name="spacing_tiny">2dp</dimen>
-    <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_medium">8dp</dimen>
-    <dimen name="spacing_large">12dp</dimen>
-    <dimen name="spacing_xlarge">16dp</dimen>
-    <dimen name="spacing_xxlarge">24dp</dimen>
+    <dimen name="spacing_none">0dp</dimen>
+    <dimen name="spacing_extra_small">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_extra_large">24dp</dimen>
+    <dimen name="spacing_huge">32dp</dimen>
+    <dimen name="spacing_extra_huge">48dp</dimen>
     
-    <!-- 卡片和容器 -->
+    <dimen name="corner_radius_none">0dp</dimen>
+    <dimen name="corner_radius_small">8dp</dimen>
+    <dimen name="corner_radius_medium">12dp</dimen>
+    <dimen name="corner_radius_large">16dp</dimen>
+    <dimen name="corner_radius_extra_large">28dp</dimen>
+    <dimen name="corner_radius_full">999dp</dimen>
+    
+    <dimen name="elevation_none">0dp</dimen>
+    <dimen name="elevation_level1">1dp</dimen>
+    <dimen name="elevation_level2">3dp</dimen>
+    <dimen name="elevation_level3">6dp</dimen>
+    <dimen name="elevation_level4">8dp</dimen>
+    <dimen name="elevation_level5">12dp</dimen>
+    
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_extra_large">48dp</dimen>
+    
+    <dimen name="touch_target_size">48dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="bottom_navigation_height">80dp</dimen>
+    
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">16dp</dimen>
-    <dimen name="card_corner_radius">12dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
     
-    <!-- 图标尺寸 -->
-    <dimen name="icon_small">16dp</dimen>
-    <dimen name="icon_medium">24dp</dimen>
-    <dimen name="icon_large">32dp</dimen>
-    <dimen name="icon_xlarge">48dp</dimen>
-    
-    <!-- 按钮和触摸目标 -->
-    <dimen name="touch_target_size">44dp</dimen>
-    <dimen name="button_height">48dp</dimen>
-    <dimen name="button_padding_horizontal">16dp</dimen>
-    <dimen name="button_padding_vertical">12dp</dimen>
-    
-    <!-- 导航栏 -->
-    <dimen name="navigation_bar_height">44dp</dimen>
-    <dimen name="navigation_padding">16dp</dimen>
-    
-    <!-- 列表项 -->
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_height_small">56dp</dimen>
+    <dimen name="list_item_height_large">88dp</dimen>
     <dimen name="list_item_padding">16dp</dimen>
-    <dimen name="list_item_margin">8dp</dimen>
-    <dimen name="list_divider_height">0.5dp</dimen>
+    <dimen name="list_item_margin_vertical">0dp</dimen>
+    <dimen name="list_divider_height">1dp</dimen>
     
-    <!-- 文本间距 -->
-    <dimen name="text_margin_small">4dp</dimen>
-    <dimen name="text_margin_medium">8dp</dimen>
-    <dimen name="text_margin_large">12dp</dimen>
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_icon_size">18dp</dimen>
     
-    <!-- 对话框 -->
-    <dimen name="dialog_padding">24dp</dimen>
-    <dimen name="dialog_margin">16dp</dimen>
-    
-    <!-- 浮动按钮 -->
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_small">40dp</dimen>
+    <dimen name="fab_size_large">96dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     
-    <!-- 分隔线 -->
-    <dimen name="separator_height">1dp</dimen>
-    <dimen name="separator_margin">20dp</dimen>
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_corner_radius">28dp</dimen>
+    
+    <dimen name="progress_bar_height">4dp</dimen>
+    
+    <dimen name="avatar_size_small">32dp</dimen>
+    <dimen name="avatar_size_medium">40dp</dimen>
+    <dimen name="avatar_size_large">56dp</dimen>
 </resources>

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
-import com.jingran.utils.ErrorHandlerKt.ErrorInfo
+import com.jingran.utils.ErrorHandler.ErrorInfo
 
 /**
  * UI组件工具类

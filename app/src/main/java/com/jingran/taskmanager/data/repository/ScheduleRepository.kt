@@ -3,15 +3,8 @@ package com.jingran.taskmanager.data.repository
 import androidx.lifecycle.LiveData
 import com.jingran.taskmanager.data.dao.FixedScheduleDao
 import com.jingran.taskmanager.data.entity.FixedSchedule
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 日程Repository
- * 负责固定日程相关的数据访问操作
- */
-@Singleton
-class ScheduleRepository @Inject constructor(
+open class ScheduleRepository constructor(
     private val fixedScheduleDao: FixedScheduleDao
 ) : BaseRepository() {
     

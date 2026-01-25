@@ -3,15 +3,8 @@ package com.jingran.taskmanager.data.repository
 import androidx.lifecycle.LiveData
 import com.jingran.taskmanager.data.dao.PlanItemDao
 import com.jingran.taskmanager.data.entity.PlanItem
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * 计划Repository
- * 负责每日计划相关的数据访问操作
- */
-@Singleton
-class PlanRepository @Inject constructor(
+open class PlanRepository constructor(
     private val planItemDao: PlanItemDao
 ) : BaseRepository() {
     

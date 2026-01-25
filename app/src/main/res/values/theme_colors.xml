@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#4285F4</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#DAE2FF</color>
+    <color name="on_primary_container">#00174A</color>
+    
+    <color name="secondary">#535F70</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#D7E3F7</color>
+    <color name="on_secondary_container">#101C2B</color>
+    
+    <color name="tertiary">#6B5778</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="tertiary_container">#F2DAFF</color>
+    <color name="on_tertiary_container">#251431</color>
+    
+    <color name="error">#BA1A1A</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#FFDAD6</color>
+    <color name="on_error_container">#410002</color>
+    
+    <color name="background">#FDFCFF</color>
+    <color name="on_background">#1A1C1E</color>
+    
+    <color name="surface">#FDFCFF</color>
+    <color name="on_surface">#1A1C1E</color>
+    <color name="surface_variant">#DFE2EB</color>
+    <color name="on_surface_variant">#43474E</color>
+    <color name="outline">#73777F</color>
+    
+    <color name="primary_fixed">#4285F4</color>
+    <color name="on_primary_fixed">#FFFFFF</color>
+    <color name="primary_fixed_dim">#A6BFFF</color>
+    <color name="on_primary_fixed_variant">#FFFFFF</color>
+    
+    <color name="secondary_fixed">#43474E</color>
+    <color name="on_secondary_fixed">#FFFFFF</color>
+    <color name="secondary_fixed_dim">#C7C7CC</color>
+    <color name="on_secondary_fixed_variant">#FFFFFF</color>
+    
+    <color name="tertiary_fixed">#6B5778</color>
+    <color name="on_tertiary_fixed">#FFFFFF</color>
+    <color name="tertiary_fixed_dim">#D8BCFF</color>
+    <color name="on_tertiary_fixed_variant">#FFFFFF</color>
+    
+    <color name="scrim">#000000</color>
+    <color name="inverse_surface">#313033</color>
+    <color name="inverse_on_surface">#F4F3F6</color>
+    <color name="inverse_primary">#A6C8FF</color>
+    <color name="on_primary_inverse">#002E6D</color>
+    
+    <color name="shadow">#000000</color>
+    
+    <color name="surface_tint">#4285F4</color>
+    
+    <color name="outline_variant">#C3C7CF</color>
+    <color name="scrim_alpha">#80000000</color>
+    
+    <color name="surface_container_lowest">#FDFCFF</color>
+    <color name="surface_container_low">#F7F2FA</color>
+    <color name="surface_container">#F1F2F6</color>
+    <color name="surface_container_high">#EBE6F0</color>
+    <color name="surface_container_highest">#E5E0EA</color>
+    
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="info">#2196F3</color>
+    
+    <color name="priority_high">#FF5252</color>
+    <color name="priority_medium">#FF9800</color>
+    <color name="priority_low">#4CAF50</color>
+    <color name="priority_urgent">#D32F2F</color>
+    <color name="priority_default">#9E9E9E</color>
+    
+    <color name="energy_high">#4CAF50</color>
+    <color name="energy_medium">#FF9800</color>
+    <color name="energy_low">#9E9E9E</color>
+    
+    <color name="task_completed">#4CAF50</color>
+    <color name="task_pending">#FF9800</color>
+    <color name="task_overdue">#FF5252</color>
+    
+    <color name="divider">#E0E0E0</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="list_item_background">#FFFFFF</color>
+    <color name="list_item_selected">#E3F2FD</color>
+    
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#9E9E9E</color>
+    <color name="text_disabled">#BDBDBD</color>
+    
+    <color name="icon_tint_primary">#212121</color>
+    <color name="icon_tint_secondary">#757575</color>
+    <color name="icon_tint_disabled">#BDBDBD</color>
+    
+    <color name="ripple_light">#1F000000</color>
+    <color name="ripple_dark">#33000000</color>
+    
+    <color name="md_theme_dark_primary">#A6C8FF</color>
+    <color name="md_theme_dark_onPrimary">#0F2F52</color>
+    <color name="md_theme_dark_primaryContainer">#284569</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D1E4FF</color>
+    <color name="md_theme_dark_secondary">#BFC6DC</color>
+    <color name="md_theme_dark_onSecondary">#293042</color>
+    <color name="md_theme_dark_secondaryContainer">#3F4759</color>
+    <color name="md_theme_dark_onSecondaryContainer">#DBE2F9</color>
+    <color name="md_theme_dark_tertiary">#DEBCDF</color>
+    <color name="md_theme_dark_onTertiary">#402843</color>
+    <color name="md_theme_dark_tertiaryContainer">#583E5B</color>
+    <color name="md_theme_dark_onTertiaryContainer">#FBD7FC</color>
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_theme_dark_background">#101418</color>
+    <color name="md_theme_dark_onBackground">#E1E2E8</color>
+    <color name="md_theme_dark_surface">#101418</color>
+    <color name="md_theme_dark_onSurface">#E1E2E8</color>
+    <color name="md_theme_dark_surfaceVariant">#43474E</color>
+    <color name="md_theme_dark_onSurfaceVariant">#C3C7CF</color>
+    <color name="md_theme_dark_outline">#8D9199</color>
+    <color name="md_theme_dark_inverseOnSurface">#F4F3F6</color>
+    <color name="md_theme_dark_inversePrimary">#0F2F52</color>
+    
+    <color name="ios_blue">#4285F4</color>
+    <color name="ios_secondary_label">#535F70</color>
+    <color name="ios_label_primary">#FFFFFF</color>
+    <color name="ios_system_fill">#DAE2FF</color>
+    <color name="ios_system_background">#FDFCFF</color>
+    <color name="ios_secondary_system_grouped_background">#D7E3F7</color>
+    <color name="ios_label_secondary">#535F70</color>
+    <color name="ios_green">#4CAF50</color>
+    <color name="ios_orange">#FF9800</color>
+    <color name="ios_purple">#9C27B0</color>
+    <color name="ios_red">#F44336</color>
+    <color name="button_blue">#4285F4</color>
+    <color name="ios_label">#212121</color>
+    <color name="ios_gray">#8E8E93</color>
+    <color name="ios_separator">#C6C6C8</color>
+    <color name="ios_label_tertiary">#8E8E93</color>
+    <color name="ios_tertiary_label">#8E8E93</color>
+</resources>

@@ -2,7 +2,7 @@ package com.jingran.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jingran.utils.ErrorHandlerKt.ErrorInfo
+import com.jingran.utils.ErrorHandler.ErrorInfo
 
 /**
  * UI状态管理工具类
