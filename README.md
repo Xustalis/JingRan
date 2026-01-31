@@ -355,12 +355,11 @@
 
 ## 联系方式
 
-- 项目地址：[GitHub Repository URL]
-- 问题反馈：[Issues URL]
-- 邮箱：[Email Address]
+- 项目地址：https://github.com/Xustalis/JingRan
+- 邮箱：gmxenith@gmail.com
 
 ---
 
 **版本**: 1.0.0  
 **最后更新**: 2026-01-24  
-**维护者**: JingRan Team
+**维护者**: Xustalis
